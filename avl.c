@@ -243,7 +243,6 @@ void avl_insert(avl_tree_t *tree, avl_node_t *node, avl_compare_t compare) {
         if (factor == 0) break;
         node = parent;
     }
-    return node;
 }
 
 void avl_remove(avl_tree_t *tree, avl_node_t *node) {

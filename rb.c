@@ -5,17 +5,17 @@
 #define	RB_BLACK 1
 
 #define rb_parent(R) ((rb_node_t *)((uint64_t)((R)->parent) & ~3))
-#define rb_color(R) ((uint64_t)((R)->parent) & 1)
+#define rb_color(R) ((uint64_t)(R)->parent & 1)
 #define rb_is_red(R) (!rb_color(R))
 #define rb_is_black(R)  rb_color(R)
 #define rb_set_red(R)   do { rb_set_color((R), RB_RED); } while(0)
 #define rb_set_black(R) do { rb_set_color((R), RB_BLACK); } while (0)
 
 static inline void rb_set_parent(rb_node_t *rb, rb_node_t *p) {
-    rb->parent = (rb_node_t*)(uint64_t)(((uint64_t)rb->parent & 3) | (uint64_t)p);
+    rb->parent = (rb_node_t*)((uint64_t)(((uint64_t)rb->parent & 3) | (uint64_t)p));
 }
 static inline void rb_set_color(rb_node_t *rb, int color) {
-    rb->parent = (rb_node_t*)(uint64_t)(((uint64_t)rb->parent & ~1) | (uint64_t)color);
+    rb->parent = (rb_node_t*)((uint64_t)(((uint64_t)rb->parent & ~1) | (uint64_t)color));
 }
 
 static inline void rb_tree_init(rb_tree_t *tree, rb_node_t *node) {
@@ -214,7 +214,7 @@ void rb_insert(rb_tree_t *tree, rb_node_t *node, rb_compare_t compare) {
     rb_insert_color(node, tree);
 }
 
-rb_node_t *rbwrap_search(rb_tree_t *tree, rb_node_t *node, rb_compare_t compare) {
+rb_node_t *rb_search(rb_tree_t *tree, rb_node_t *node, rb_compare_t compare) {
     rb_node_t *n = tree->root;
     while (n) {
         int cmp = compare(node, n, tree->aux);

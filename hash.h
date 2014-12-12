@@ -23,11 +23,9 @@ struct hashtable_s {
 
 int hashtable_init(hashtable_t *table, size_t pow2size, size_t (*hash)(const void *key, size_t keylen));
 void hashtable_destroy(hashtable_t *table);
-
 void hashtable_insert(hashtable_t *table, hashnode_t *node, void *key, size_t keylen);
-void hashtable_remove(hashtable_t *table, const void *key, size_t keylen);
-
 hashnode_t *hashtable_search(hashtable_t *table, const void *key, size_t keylen);
+void hashtable_remove(hashtable_t *table, const void *key, size_t keylen);
 
 #define hashtable_ref(ELEMENT, TYPE, MEMBER) \
     ((TYPE *)((unsigned char *)(ELEMENT) - offsetof(TYPE, MEMBER)))
