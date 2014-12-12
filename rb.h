@@ -2,7 +2,7 @@
 #define RB_HDR
 #include <stddef.h>
 
-#ifndef __cplusplus
+#ifdef __cplusplus
 extern "C" {
 #endif
 
@@ -10,7 +10,7 @@ typedef struct rb_node_s rb_node_t;
 typedef struct rb_tree_s rb_tree_t;
 
 struct rb_node_s {
-    unsigned long parent;
+    rb_node_t *parent;
     rb_node_t *right;
     rb_node_t *left;
 };
@@ -20,7 +20,7 @@ struct rb_tree_s {
     void *aux;
 };
 
-typedef int (*rb_compare_t)(const rb_node_t *lhs, const rb_node_t *rhs, void *aux);
+typedef int (*rb_compare_t)(const rb_node_t *lhs, const rb_node_t *rhs, const void *aux);
 
 void rb_init(rb_tree_t *tree, void *aux);
 
