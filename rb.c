@@ -1,21 +1,33 @@
 #include <stdint.h>
 #include "rb.h"
 
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+
+#if __STDC_VERSION__ >= 201112L || (__has_feature(c_static_assert) && __has_feature(c_alignof))
+_Static_assert(_Alignof(rb_node_t) >= 4, "Incompatible rb_node_t alignment");
+#elif __GNUC__
+typedef char static_assertion_rb_node_t_alignment[!!(__alignof__(rb_node_t)>4)*2-1];
+#else
+typedef char static_assertion_rb_node_t_alignment[!!(offsetof(struct {char c;rb_node_t t;}, t)>4)*2-1];
+#endif
+
 #define	RB_RED   0
 #define	RB_BLACK 1
 
-#define rb_parent(R) ((rb_node_t *)((uint64_t)((R)->parent) & ~3))
-#define rb_color(R) ((uint64_t)(R)->parent & 1)
+#define rb_parent(R) ((rb_node_t *)((uintptr_t)((R)->parent) & ~3))
+#define rb_color(R) ((uintptr_t)(R)->parent & 1)
 #define rb_is_red(R) (!rb_color(R))
 #define rb_is_black(R)  rb_color(R)
 #define rb_set_red(R)   do { rb_set_color((R), RB_RED); } while(0)
 #define rb_set_black(R) do { rb_set_color((R), RB_BLACK); } while (0)
 
 static inline void rb_set_parent(rb_node_t *rb, rb_node_t *p) {
-    rb->parent = (rb_node_t*)((uint64_t)(((uint64_t)rb->parent & 3) | (uint64_t)p));
+    rb->parent = (rb_node_t*)((uintptr_t)(((uintptr_t)rb->parent & 3) | (uintptr_t)p));
 }
 static inline void rb_set_color(rb_node_t *rb, int color) {
-    rb->parent = (rb_node_t*)((uint64_t)(((uint64_t)rb->parent & ~1) | (uint64_t)color));
+    rb->parent = (rb_node_t*)((uintptr_t)(((uintptr_t)rb->parent & ~1) | (uintptr_t)color));
 }
 
 static inline void rb_tree_init(rb_tree_t *tree, rb_node_t *node) {

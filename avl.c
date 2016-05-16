@@ -1,6 +1,18 @@
 #include <stdint.h>
 #include "avl.h"
 
+#ifndef __has_feature
+#define __has_feature(x) 0
+#endif
+
+#if __STDC_VERSION__ >= 201112L || (__has_feature(c_static_assert) && __has_feature(c_alignof))
+_Static_assert(_Alignof(avl_node_t) >= 4, "Incompatible avl_node_t alignment");
+#elif __GNUC__
+typedef char static_assertion_avl_node_t_alignment[!!(__alignof__(avl_node_t)>4)*2-1];
+#else
+typedef char static_assertion_avl_node_t_alignment[!!(offsetof(struct {char c;avl_node_t t;}, t)>4)*2-1];
+#endif
+
 static int avl_abs(int n) {
     int mask = n >> ((sizeof(int) * 8) - 1);
     return (mask + n) ^ mask;
@@ -11,19 +23,19 @@ static inline int avl_max(int lhs, int rhs) {
 }
 
 static inline void avl_set_parent(avl_node_t *node, avl_node_t *parent) {
-    node->parent = (avl_node_t*)((uint64_t)parent | ((uint64_t)node->parent & 3));
+    node->parent = (avl_node_t*)((uintptr_t)parent | ((uintptr_t)node->parent & 3));
 }
 
 static inline avl_node_t *avl_get_parent(const avl_node_t *const node) {
-    return (avl_node_t*)((uint64_t)node->parent & ~3);
+    return (avl_node_t*)((uintptr_t)node->parent & ~3);
 }
 
 static inline void avl_set_factor(avl_node_t *node, int factor) {
-    node->parent = (avl_node_t*)((uint64_t)avl_get_parent(node) | (uint64_t)(factor + 1));
+    node->parent = (avl_node_t*)((uintptr_t)avl_get_parent(node) | (uintptr_t)(factor + 1));
 }
 
 static inline int avl_get_factor(const avl_node_t *const node) {
-    return ((int)((uint64_t)node->parent & 3)) - 1;
+    return ((int)((uintptr_t)node->parent & 3)) - 1;
 }
 
 static inline int avl_get_balance(const avl_node_t *const node) {
