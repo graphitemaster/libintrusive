@@ -1,6 +1,7 @@
 #ifndef RB_HDR
 #define RB_HDR
 #include <stddef.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,7 +11,7 @@ typedef struct rb_node_s rb_node_t;
 typedef struct rb_tree_s rb_tree_t;
 
 struct rb_node_s {
-    rb_node_t *parent;
+    uintptr_t parent;
     rb_node_t *right;
     rb_node_t *left;
 };

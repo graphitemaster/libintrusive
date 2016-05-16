@@ -1,6 +1,7 @@
 #ifndef AVL_HDR
 #define AVL_HDR
 #include <stddef.h>
+#include <stdint.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -10,7 +11,7 @@ typedef struct avl_node_s avl_node_t;
 typedef struct avl_tree_s avl_tree_t;
 
 struct avl_node_s {
-    avl_node_t *parent;
+    uintptr_t parent;
     avl_node_t *left;
     avl_node_t *right;
     avl_node_t *prev;

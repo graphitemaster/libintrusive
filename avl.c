@@ -23,19 +23,19 @@ static inline int avl_max(int lhs, int rhs) {
 }
 
 static inline void avl_set_parent(avl_node_t *node, avl_node_t *parent) {
-    node->parent = (avl_node_t*)((uintptr_t)parent | ((uintptr_t)node->parent & 3));
+    node->parent = (uintptr_t)parent | (node->parent & 3);
 }
 
 static inline avl_node_t *avl_get_parent(const avl_node_t *const node) {
-    return (avl_node_t*)((uintptr_t)node->parent & ~3);
+    return (avl_node_t*)(node->parent & ~3);
 }
 
 static inline void avl_set_factor(avl_node_t *node, int factor) {
-    node->parent = (avl_node_t*)((uintptr_t)avl_get_parent(node) | (uintptr_t)(factor + 1));
+    node->parent = (uintptr_t)avl_get_parent(node) | (uintptr_t)(factor + 1);
 }
 
 static inline int avl_get_factor(const avl_node_t *const node) {
-    return ((int)((uintptr_t)node->parent & 3)) - 1;
+    return ((int)(node->parent & 3)) - 1;
 }
 
 static inline int avl_get_balance(const avl_node_t *const node) {
