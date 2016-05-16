@@ -24,10 +24,10 @@ typedef char static_assertion_rb_node_t_alignment[!!(offsetof(struct {char c;rb_
 #define rb_set_black(R) do { rb_set_color((R), RB_BLACK); } while (0)
 
 static inline void rb_set_parent(rb_node_t *rb, rb_node_t *p) {
-    rb->parent = (rb_node_t*)((uintptr_t)(((uintptr_t)rb->parent & 3) | (uintptr_t)p));
+    rb->parent = (rb->parent & 3) | (uintptr_t)p;
 }
 static inline void rb_set_color(rb_node_t *rb, int color) {
-    rb->parent = (rb_node_t*)((uintptr_t)(((uintptr_t)rb->parent & ~1) | (uintptr_t)color));
+    rb->parent = ((rb->parent & ~1) | (uintptr_t)color);
 }
 
 static inline void rb_tree_init(rb_tree_t *tree, rb_node_t *node) {
@@ -47,7 +47,7 @@ static inline void rb_init_node(rb_node_t *rb) {
 }
 
 static inline void rb_link_node(rb_node_t *node, rb_node_t *parent, rb_node_t **link) {
-    node->parent = parent;
+    node->parent = (uintptr_t)parent;
     node->left = NULL;
     node->right = NULL;
     *link = node;
