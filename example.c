@@ -161,6 +161,8 @@ void hash() {
     printf("%s\n", aa->message);
     printf("%s\n", bb->message);
     printf("%s\n", cc->message);
+
+    hashtable_destroy(&hash);
 }
 
 int main() {
