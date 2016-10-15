@@ -12,8 +12,8 @@ typedef struct {
 } test_rb_t;
 
 int test_rb_compare(const rb_node_t *lhs, const rb_node_t *rhs, const void *aux) {
-    const test_rb_t *a = (const test_rb_t*)lhs;
-    const test_rb_t *b = (const test_rb_t*)rhs;
+    const test_rb_t *a = rb_ref(lhs, test_rb_t, node);
+    const test_rb_t *b = rb_ref(rhs, test_rb_t, node);
     if (a->number < b->number) return -1;
     if (a->number > b->number) return 1;
     return 0;
@@ -55,8 +55,8 @@ typedef struct {
 } test_avl_t;
 
 int test_avl_compare(const avl_node_t *lhs, const avl_node_t *rhs, const void *aux) {
-    const test_avl_t *a = (const test_avl_t*)lhs;
-    const test_avl_t *b = (const test_avl_t*)rhs;
+    const test_avl_t *a = avl_ref(lhs, test_avl_t, node);
+    const test_avl_t *b = avl_ref(rhs, test_avl_t, node);
     if (a->number < b->number) return -1;
     if (a->number > b->number) return 1;
     return 0;
