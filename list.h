@@ -32,6 +32,8 @@ void list_insert_after(list_t* list, link_t* after, link_t* link);
 link_t* list_pop_front(list_t* list);
 link_t* list_pop_back(list_t* list);
 
+void list_remove(list_t* list, link_t* link);
+
 link_t* list_head(const list_t* list);
 link_t* list_tail(const list_t* list);
 
