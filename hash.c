@@ -15,7 +15,9 @@ hash_node_find(hashnode_t* node, const void* key, size_t keylen)
             continue;
         }
         if (memcmp(node->key, key, keylen) == 0)
+        {
             return node;
+        }
         node = node->next;
     }
     return NULL;
@@ -66,7 +68,9 @@ void hashtable_insert(hashtable_t* table,
         return;
     }
     if (hash_node_find(head, node->key, node->keylen))
+    {
         return;
+    }
     table->nodes[bin] = node;
     node->next = head;
 }
@@ -97,9 +101,13 @@ void hashtable_remove(hashtable_t* table, const void* key, size_t keylen)
         if (memcmp(current->key, key, keylen) == 0)
         {
             if (prev)
+            {
                 prev->next = current->next;
+            }
             else
+            {
                 table->nodes[bin] = current->next;
+            }
             current->next = NULL;
             return;
         }

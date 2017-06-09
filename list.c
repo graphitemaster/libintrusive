@@ -47,9 +47,13 @@ void list_insert_after(list_t* list, link_t* after, link_t* link)
     link->next = after->next;
     link->prev = after;
     if (after->next)
+    {
         after->next->prev = link;
+    }
     else
+    {
         list->tail = link;
+    }
     after->next = link;
 }
 
@@ -58,9 +62,13 @@ void list_insert_before(list_t* list, link_t* before, link_t* link)
     link->prev = before->prev;
     link->next = before;
     if (before->prev)
+    {
         before->prev->next = link;
+    }
     else
+    {
         list->head = link;
+    }
     before->prev = link;
 }
 
@@ -68,15 +76,25 @@ link_t* list_pop_front(list_t* list)
 {
     link_t* link = list->head;
     if (!link)
+    {
         return NULL;
+    }
     if (link->next)
+    {
         link->next->prev = link->prev;
+    }
     if (link->prev)
+    {
         link->prev->next = link->next;
+    }
     if (list->head == link)
+    {
         list->head = link->next;
+    }
     if (list->tail == link)
+    {
         list->tail = link->prev;
+    }
     return link;
 }
 
@@ -84,30 +102,50 @@ link_t* list_pop_back(list_t* list)
 {
     link_t* link = list->tail;
     if (!link)
+    {
         return NULL;
+    }
     if (link->next)
+    {
         link->next->prev = link->prev;
+    }
     if (link->prev)
+    {
         link->prev->next = link->next;
+    }
     if (list->head == link)
+    {
         list->head = link->next;
+    }
     if (list->tail == link)
+    {
         list->tail = link->prev;
+    }
     return link;
 }
 
 void list_remove(list_t* list, link_t* link)
 {
     if (!link)
+    {
         return;
+    }
     if (link->next)
+    {
         link->next->prev = link->prev;
+    }
     if (link->prev)
+    {
         link->prev->next = link->next;
+    }
     if (list->head == link)
+    {
         list->head = link->next;
+    }
     if (list->tail == link)
+    {
         list->tail = link->prev;
+    }
 }
 
 link_t* list_head(const list_t* list)

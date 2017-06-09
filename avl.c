@@ -62,23 +62,29 @@ avl_rotate_ll(avl_node_t* parent, int pfactor, int* cfactor, int* difference)
         cleft = cright - *cfactor;
         pright = cleft + 1 + pfactor;
         if (difference)
+        {
             *difference =
                 avl_max(cleft, avl_max(cright, pright) + 1) - (cleft + 1);
+        }
     }
     else
     {
         cright = cleft + *cfactor;
         pright = cright + 1 + pfactor;
         if (difference)
+        {
             *difference =
                 avl_max(cleft, avl_max(cright, pright) + 1) - (cright + 1);
+        }
     }
     *cfactor = (avl_max(cright, pright) + 1) - cleft;
     avl_set_factor(parent, pright - cright);
 
     parent->left = child->right;
     if (child->right)
+    {
         avl_set_parent(child->right, parent);
+    }
     child->right = parent;
     avl_set_parent(child, avl_get_parent(parent));
     avl_set_parent(parent, child);
@@ -99,23 +105,29 @@ avl_rotate_rr(avl_node_t* parent, int pfactor, int* cfactor, int* difference)
         cleft = cright - *cfactor;
         pleft = cleft + 1 - pfactor;
         if (difference)
+        {
             *difference =
                 avl_max(cright, avl_max(cleft, pleft) + 1) - (cleft - 1);
+        }
     }
     else
     {
         cright = cleft + *cfactor;
         pleft = cright + 1 - pfactor;
         if (difference)
+        {
             *difference =
                 avl_max(cright, avl_max(cleft, pleft) + 1) - (cright + 1);
+        }
     }
     *cfactor = cright - (avl_max(cleft, pleft) + 1);
     avl_set_factor(parent, cleft - pleft);
 
     parent->right = child->left;
     if (child->left)
+    {
         avl_set_parent(child->left, parent);
+    }
     child->left = parent;
     avl_set_parent(child, avl_get_parent(parent));
     avl_set_parent(parent, child);
@@ -173,7 +185,9 @@ static avl_node_t* avl_balance(avl_node_t* node, int factor)
 {
     int difference = avl_get_balance(node) + factor;
     if (!node)
+    {
         return NULL;
+    }
     if (difference < -1 && node->left)
     {
         if (avl_get_balance(node->left) <= 0)
@@ -217,7 +231,9 @@ avl_node_t* avl_head(const avl_tree_t* tree)
 {
     avl_node_t* head = NULL;
     for (avl_node_t* node = tree->root; node; node = node->left)
+    {
         head = node;
+    }
     return head;
 }
 
@@ -225,7 +241,9 @@ avl_node_t* avl_tail(const avl_tree_t* tree)
 {
     avl_node_t* tail = NULL;
     for (avl_node_t* node = tree->root; node; node = node->right)
+    {
         tail = node;
+    }
     return tail;
 }
 
@@ -246,11 +264,17 @@ avl_search(avl_tree_t* tree, avl_node_t* node, avl_compare_t compare)
     {
         int cmp = compare(parent, node, tree->aux);
         if (cmp > 0)
+        {
             parent = parent->left;
+        }
         else if (cmp < 0)
+        {
             parent = parent->right;
+        }
         else
+        {
             return parent;
+        }
     }
     return NULL;
 }
@@ -263,11 +287,17 @@ void avl_insert(avl_tree_t* tree, avl_node_t* node, avl_compare_t compare)
         int cmp = compare(current, node, tree->aux);
         parent = current;
         if (cmp > 0)
+        {
             current = current->left;
+        }
         else if (cmp < 0)
+        {
             current = current->right;
+        }
         else
+        {
             return;
+        }
     }
 
     avl_set_parent(node, parent);
@@ -286,7 +316,9 @@ void avl_insert(avl_tree_t* tree, avl_node_t* node, avl_compare_t compare)
             node->next = parent;
             node->prev = parent->prev;
             if (parent->prev)
+            {
                 parent->prev->next = node;
+            }
             parent->prev = node;
         }
         else
@@ -295,7 +327,9 @@ void avl_insert(avl_tree_t* tree, avl_node_t* node, avl_compare_t compare)
             node->prev = parent;
             node->next = parent->next;
             if (parent->next)
+            {
                 parent->next->prev = node;
+            }
             parent->next = node;
         }
     }
@@ -330,7 +364,9 @@ void avl_insert(avl_tree_t* tree, avl_node_t* node, avl_compare_t compare)
             {
                 factor = 0;
                 if (avl_abs(oldfactor) < avl_abs(avl_get_factor(node)))
+                {
                     factor = parent->left == node ? -1 : 1;
+                }
             }
         }
         else if (node == tree->root)
@@ -339,7 +375,9 @@ void avl_insert(avl_tree_t* tree, avl_node_t* node, avl_compare_t compare)
             break;
         }
         if (factor == 0)
+        {
             break;
+        }
         node = parent;
     }
 }
@@ -347,11 +385,17 @@ void avl_insert(avl_tree_t* tree, avl_node_t* node, avl_compare_t compare)
 void avl_remove(avl_tree_t* tree, avl_node_t* node)
 {
     if (!node)
+    {
         return;
+    }
     if (node->prev)
+    {
         node->prev->next = node->next;
+    }
     if (node->next)
+    {
         node->next->prev = node->prev;
+    }
 
     avl_node_t* next = avl_head(&((avl_tree_t){node->right, NULL}));
     avl_node_t* current = NULL;
@@ -365,7 +409,9 @@ void avl_remove(avl_tree_t* tree, avl_node_t* node)
             {
                 avl_get_parent(next)->left = next->right;
                 if (next->right)
+                {
                     avl_set_parent(next->right, avl_get_parent(next));
+                }
             }
         }
         if (avl_get_parent(node))
@@ -384,7 +430,9 @@ void avl_remove(avl_tree_t* tree, avl_node_t* node)
         {
             node->right = node->right;
             if (node->right)
+            {
                 avl_set_parent(node->right, next);
+            }
             current = avl_get_parent(next);
             factor = 1;
         }
@@ -396,7 +444,9 @@ void avl_remove(avl_tree_t* tree, avl_node_t* node)
 
         next->left = node->left;
         if (node->left)
+        {
             avl_set_parent(node->left, next);
+        }
         avl_set_parent(next, avl_get_parent(node));
         avl_set_factor(next, avl_get_factor(node));
     }
@@ -417,7 +467,9 @@ void avl_remove(avl_tree_t* tree, avl_node_t* node)
             }
         }
         if (node->left)
+        {
             avl_set_parent(node->left, parent);
+        }
         current = avl_get_parent(node);
     }
 
@@ -425,7 +477,9 @@ void avl_remove(avl_tree_t* tree, avl_node_t* node)
     {
         tree->root = next;
         if (!next && node->left)
+        {
             tree->root = node->left;
+        }
     }
 
     while (current)
@@ -453,7 +507,9 @@ void avl_remove(avl_tree_t* tree, avl_node_t* node)
             {
                 factor = 0;
                 if (avl_abs(oldfactor) > avl_abs(avl_get_factor(current)))
+                {
                     factor = parent->left == current ? 1 : -1;
+                }
             }
         }
         else if (current == tree->root)
@@ -462,7 +518,9 @@ void avl_remove(avl_tree_t* tree, avl_node_t* node)
             break;
         }
         if (factor == 0)
+        {
             break;
+        }
         current = parent;
     }
 }
