@@ -8,6 +8,8 @@ void list_init(list_t* list)
 
 void list_push_front(list_t* list, link_t* link)
 {
+    list_remove(list, link);
+
     if (list->head)
     {
         list->head->prev = link;
@@ -26,6 +28,8 @@ void list_push_front(list_t* list, link_t* link)
 
 void list_push_back(list_t* list, link_t* link)
 {
+    list_remove(list, link);
+
     if (list->tail)
     {
         list->tail->next = link;
