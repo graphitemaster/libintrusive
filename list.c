@@ -46,34 +46,44 @@ void list_push_back(list_t* list, link_t* link)
     }
 }
 
-void list_insert_after(list_t* list, link_t* after, link_t* link)
-{
-    link->next = after->next;
-    link->prev = after;
-    if (after->next)
-    {
-        after->next->prev = link;
-    }
-    else
-    {
-        list->tail = link;
-    }
-    after->next = link;
-}
-
 void list_insert_before(list_t* list, link_t* before, link_t* link)
 {
-    link->prev = before->prev;
-    link->next = before;
-    if (before->prev)
+    if (before != link)
     {
-        before->prev->next = link;
+        list_remove(list, link);
+
+        link->prev = before->prev;
+        link->next = before;
+        if (before->prev)
+        {
+            before->prev->next = link;
+        }
+        else
+        {
+            list->head = link;
+        }
+        before->prev = link;
     }
-    else
+}
+
+void list_insert_after(list_t* list, link_t* after, link_t* link)
+{
+    if (after != link)
     {
-        list->head = link;
+        list_remove(list, link);
+
+        link->next = after->next;
+        link->prev = after;
+        if (after->next)
+        {
+            after->next->prev = link;
+        }
+        else
+        {
+            list->tail = link;
+        }
+        after->next = link;
     }
-    before->prev = link;
 }
 
 link_t* list_pop_front(list_t* list)
