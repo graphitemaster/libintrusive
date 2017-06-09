@@ -1,3 +1,4 @@
+#include <stddef.h>
 #include <stdio.h>
 
 #include "rb.h"
@@ -24,9 +25,9 @@ void rb() {
     rb_tree_t tree;
     rb_init(&tree, NULL);
 
-    test_rb_t a = { 1 };
-    test_rb_t b = { 2 };
-    test_rb_t c = { 3 };
+    test_rb_t a = { 1, {0, NULL, NULL} };
+    test_rb_t b = { 2, {0, NULL, NULL} };
+    test_rb_t c = { 3, {0, NULL, NULL} };
 
     rb_insert(&tree, &a.node, &test_rb_compare);
     rb_insert(&tree, &b.node, &test_rb_compare);
@@ -67,9 +68,9 @@ void avl() {
     avl_tree_t tree;
     avl_init(&tree, NULL);
 
-    test_avl_t a = { 1 };
-    test_avl_t b = { 2 };
-    test_avl_t c = { 3 };
+    test_avl_t a = { 1, {0, NULL, NULL, NULL, NULL} };
+    test_avl_t b = { 2, {0, NULL, NULL, NULL, NULL} };
+    test_avl_t c = { 3, {0, NULL, NULL, NULL, NULL} };
 
     avl_insert(&tree, &a.node, &test_avl_compare);
     avl_insert(&tree, &b.node, &test_avl_compare);
@@ -102,9 +103,9 @@ void list() {
     list_t list;
     list_init(&list);
 
-    test_list_t a = { "Hello" };
-    test_list_t b = { "Intrusive" };
-    test_list_t c = { "World" };
+    test_list_t a = { "Hello", {NULL, NULL} };
+    test_list_t b = { "Intrusive", {NULL, NULL} };
+    test_list_t c = { "World", {NULL, NULL} };
 
     list_push_back(&list, &a.link);
     list_push_back(&list, &b.link);
@@ -140,9 +141,9 @@ void hash() {
     printf(">> HASH\n");
     hashtable_t hash;
 
-    test_hash_t a = { "Hello" };
-    test_hash_t b = { "Intrusive" };
-    test_hash_t c = { "World" };
+    test_hash_t a = { "Hello", {NULL, 0, NULL} };
+    test_hash_t b = { "Intrusive", {NULL, 0, NULL} };
+    test_hash_t c = { "World", {NULL, 0, NULL} };
 
     hashtable_init(&hash, 10, &hash_func);
 
